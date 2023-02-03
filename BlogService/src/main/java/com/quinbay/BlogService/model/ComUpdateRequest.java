@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VotePojo {
-    Integer votedfor;
-    ParentType parenttype;
-    Type type;
-    int voteby;
+public class ComUpdateRequest {
+    int ansId;
+    String content;
+    int updatedBy;
 }

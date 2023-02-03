@@ -1,16 +1,19 @@
 package com.quinbay.user.service.api;
 
-import com.quinbay.user.service.model.UserReq;
+import com.quinbay.user.service.model.LoginRequest;
+import com.quinbay.user.service.model.UserRequest;
+import com.quinbay.user.service.model.UserUpdateRequest;
 import com.quinbay.user.service.model.Users;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserInterface {
-    Users add_user(UserReq userReq);
-    Users get_user_byId(int userId);
-    ResponseEntity user_login(String Email,String password);
-    ResponseEntity delete_user(int userId);
-    ResponseEntity<String> update_password(int id, String password);
-    ResponseEntity<String> update_creditPoints(int userId,Boolean check);
+    Users addUser(UserRequest userRequest);
+    Users getUserById(int userId);
+    ResponseEntity userLogin(LoginRequest loginRequest);
+    ResponseEntity deleteUser(int userId);
+    ResponseEntity<String> updateUser(UserUpdateRequest userUpdateRequest);
+    ResponseEntity<String> updatePassword(int id, String password);
+    ResponseEntity<String> updateCreditPoints(int userId,Boolean check);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -18,18 +19,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BlogTags {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="blogTagSeq",sequenceName = "blogTagSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "blogTagSeq")
     @Column(name="id")
     int id;
     @Column(name="blogid")
-    int blogid;
+    Integer blogid;
     @Column(name="tagid")
-    int tagid;
+    Integer tagid;
+    @Column(name="tagname")
+    String tagname;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
 
+    public BlogTags(int blogId,int tagId,String tagName){
+        this.blogid=blogId;
+        this.tagid=tagId;
+        this.tagname=tagName;
+    }
 }

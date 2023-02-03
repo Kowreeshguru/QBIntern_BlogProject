@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -17,17 +17,26 @@ import java.time.LocalDateTime;
 public class UserTag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="usertagSeq",sequenceName = "usertagSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "usertagSeq")
     @Column(name="id")
     int id;
     @Column(name="userid")
-    int userid;
+    Integer userid;
     @Column(name="tagid")
-    int tagid;
+    Integer tagid;
+    @Column(name="tagname")
+    String tagname;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
+
+    public UserTag(int userId,int tagId,String tagName){
+        this.userid=userId;
+        this.tagid=tagId;
+        this.tagname=tagName;
+    }
 }

@@ -1,6 +1,7 @@
 package com.quinbay.BlogService.controller;
 
-import com.quinbay.BlogService.model.VotePojo;
+import com.quinbay.BlogService.model.ParentType;
+import com.quinbay.BlogService.model.VoteRequest;
 import com.quinbay.BlogService.model.Votes;
 import com.quinbay.BlogService.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ public class VoteController {
     VoteService voteService;
 
     @GetMapping("/getVoteStatus")
-    public Votes get_voteStatus(@RequestParam int votedfor,@RequestParam int userId){
-        return voteService.getVotes(votedfor,userId);
+    public Votes getVoteStatus(@RequestParam int votedfor, @RequestParam int userId, @RequestParam ParentType type){
+        return voteService.getVotes(votedfor,userId,type);
     }
 
     @PostMapping("/addvote")
-    public void add_votes(@RequestBody VotePojo votePojo)
+    public void addVotes(@RequestBody VoteRequest voteRequest)
     {
-        voteService.add_vote(votePojo);
+        voteService.addVote(voteRequest);
     }
 
 }

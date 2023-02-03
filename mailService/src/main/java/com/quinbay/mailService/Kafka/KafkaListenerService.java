@@ -20,8 +20,8 @@ public class KafkaListenerService {
     MailOp mailOp;
 
     @KafkaListener(topics="send.MailListInfo",groupId="warehouse")
-    public void getWholesalerInfo(ConsumerRecord<?,String> consumerRecord){
-//        System.out.println("inside mail listener");
+    public void getMailInfo(ConsumerRecord<?,String> consumerRecord){
+        System.out.println("inside mail listener");
 
         try{
             mailDetails = objectMapper.readValue(consumerRecord.value(),new com.fasterxml.jackson.core.type.TypeReference<MailDetails>(){

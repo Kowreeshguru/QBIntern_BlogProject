@@ -16,37 +16,37 @@ public class AnswerController {
     AnswerService answerService;
 
     @PostMapping("/addAnswer")
-    public Answers add_answer(@RequestBody AnswerPojo answerPojo)
+    public Answers addAnswer(@RequestBody AnswerRequest answerRequest)
     {
-        return answerService.add_answer(answerPojo);
+        return answerService.addAnswer(answerRequest);
     }
     @GetMapping("/getAnswerForBlog")
-    public ArrayList<Answers> get_userTags(@RequestParam int blogId){
+    public ArrayList<Answers> getUserTags(@RequestParam int blogId){
         return answerService.getAnswerForBlog(blogId);
     }
 
     @PutMapping("/updateAnswer")
-    public ResponseEntity update_answer(@RequestBody AnsUpdatePojo ansUpdatePojo)
+    public ResponseEntity updateAnswer(@RequestBody AnsUpdateRequest ansUpdateRequest)
     {
-        return answerService.update_answer(ansUpdatePojo);
+        return answerService.updateAnswer(ansUpdateRequest);
     }
 
     @PutMapping("/updateIsReported")
-    public ResponseEntity update_isreported(@RequestParam int ansId,@RequestParam int reportedBy) { return answerService.update_isReported(ansId,reportedBy); }
+    public ResponseEntity updateIsreported(@RequestParam int ansId,@RequestParam int reportedBy) { return answerService.updateIsReported(ansId,reportedBy); }
 
 //    @PutMapping("/updateUpvotes")
-//    public ResponseEntity update_upvotes(@RequestParam int ansId,@RequestParam Boolean check) { return answerService.update_upvotes(ansId,check); }
+//    public ResponseEntity updateUpvotes(@RequestParam int ansId,@RequestParam Boolean check) { return answerService.update_upvotes(ansId,check); }
 //
 //    @PutMapping("/updateDownvotes")
-//    public ResponseEntity remove_upvotes(@RequestParam int ansId,@RequestParam Boolean check) { return answerService.update_downvotes(ansId,check); }
+//    public ResponseEntity removeUpvotes(@RequestParam int ansId,@RequestParam Boolean check) { return answerService.update_downvotes(ansId,check); }
 
-    @PutMapping("/updateIsClosed")
-    public ResponseEntity update_isclosed(@RequestParam int ansId) { return answerService.update_isClosed(ansId); }
+//    @PutMapping("/updateIsClosed")
+//    public ResponseEntity updateIsclosed(@RequestParam int ansId) { return answerService.updateIsClosed(ansId); }
 
     @DeleteMapping("/deleteTag")
-    public ResponseEntity delete_answer(@RequestParam int ansId)
+    public ResponseEntity deleteAnswer(@RequestParam int ansId)
     {
-        return answerService.delete_answer(ansId);
+        return answerService.deleteAnswer(ansId);
     }
 
 }

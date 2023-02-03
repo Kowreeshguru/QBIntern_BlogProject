@@ -14,16 +14,22 @@ public class BlogViewService implements BlogViewInterface {
 
     @Autowired
     BlogViewRepository blogViewRepository;
-    @Autowired
-    BlogService blogService;
+//    @Autowired
+//    BlogService blogService;
 
     @Override
-    public BlogView add_blogView(BlogView blogView) {
-        BlogView blogView1=null;
-        blogView1=blogViewRepository.findByBlogidAndUserid(blogView.getBlogid(),blogView.getUserid());
-        if(blogView1 == null){
-            blogService.add_views(blogView.getBlogid());
-            return blogViewRepository.save(blogView);
-        }else{return null;}
+    public Boolean addBlogView(BlogView blogView) {
+        try {
+            BlogView blogView1 = blogViewRepository.findByBlogidAndUserid(blogView.getBlogid(), blogView.getUserid());
+            if (blogView1 != null) {
+                System.out.println("inside addblogview");
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
     }
 }

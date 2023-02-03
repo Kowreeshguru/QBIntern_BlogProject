@@ -1,8 +1,10 @@
 package com.quinbay.user.service.controller;
 
 
-import com.quinbay.user.service.model.UserReq;
+import com.quinbay.user.service.model.UserRequest;
+import com.quinbay.user.service.model.UserUpdateRequest;
 import com.quinbay.user.service.model.Users;
+import com.quinbay.user.service.model.LoginRequest;
 import com.quinbay.user.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,42 +20,47 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/addUser")
-    public Users addUser(@RequestBody UserReq userReq)
+    public Users addUser(@RequestBody UserRequest userRequest)
     {
-        return userService.add_user(userReq);
+        return userService.addUser(userRequest);
     }
 
     @GetMapping("/getUserById")
-    public Users get_user_byId(@RequestParam int UserId){
-        return userService.get_user_byId(UserId);
+    public Users getUserById(@RequestParam int UserId){
+        return userService.getUserById(UserId);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Users> login(@RequestParam String Email,@RequestParam String password){
-        return userService.user_login(Email,password);
+    @PostMapping("/userLogin")
+    public ResponseEntity<Users> login(@RequestBody LoginRequest loginRequest){
+        return userService.userLogin(loginRequest);
     }
+
+//    @GetMapping("/userEmail")
+//    public void login(@RequestParam List<Integer> tagId){
+//        userService.getEmail(tagId);
+//    }
 
     @PutMapping("/updateUser")
-    public ResponseEntity update_user(@RequestParam int UserId, @RequestParam String Username,@RequestParam String EmailId,@RequestParam String JobPosition)
+    public ResponseEntity updateUser(@RequestBody UserUpdateRequest userUpdateRequest)
     {
-        return userService.update_user(UserId, Username,EmailId,JobPosition);
+        return userService.updateUser(userUpdateRequest);
     }
 
     @PutMapping("/updatePassword")
-    public ResponseEntity update_password(@RequestParam int UserId, @RequestParam String password)
+    public ResponseEntity updatePassword(@RequestParam int UserId, @RequestParam String password)
     {
-        return userService.update_password(UserId, password);
+        return userService.updatePassword(UserId, password);
     }
 
     @PutMapping("/updateCreditpoints")
-    public ResponseEntity update_creditPoints(@RequestParam int UserId, @RequestParam Boolean check)
+    public ResponseEntity updateCreditPoints(@RequestParam int UserId, @RequestParam Boolean check)
     {
-        return userService.update_creditPoints(UserId, check);
+        return userService.updateCreditPoints(UserId, check);
     }
 
-    @DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity delete_user(@RequestParam int UserId) {
-        return userService.delete_user(UserId);
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity deleteUser(@RequestParam int UserId) {
+        return userService.deleteUser(UserId);
 
     }
 }

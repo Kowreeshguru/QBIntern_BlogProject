@@ -1,5 +1,4 @@
-package com.quinbay.TagService.Model;
-
+package com.quinbay.BlogService.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagPojo {
-    String tagName;
-    String tagDescription;
-    int createdby;
+public class AnswerRequest {
+    String content;
+    int answeredFor;
+    int answeredBy;
 }

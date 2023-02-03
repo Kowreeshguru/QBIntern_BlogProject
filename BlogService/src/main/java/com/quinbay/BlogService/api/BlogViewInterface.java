@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BlogViewInterface {
-    BlogView add_blogView(BlogView blogView);
+    Boolean addBlogView(BlogView blogView);
 }

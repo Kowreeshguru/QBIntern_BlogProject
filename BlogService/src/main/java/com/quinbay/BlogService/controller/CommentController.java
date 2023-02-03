@@ -15,29 +15,29 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("/addComment")
-    public Comment add_comment(@RequestBody CommentPojo commentPojo)
+    public Comment addComment(@RequestBody CommentRequest commentRequest)
     {
-        return commentService.add_comment(commentPojo);
+        return commentService.addComment(commentRequest);
     }
 
     @GetMapping("/getComment")
-    public ArrayList<Comment> get_userTags(@RequestParam int commentId){
-        return commentService.getComment(commentId);
+    public ArrayList<Comment> getUserTags(@RequestParam int commentId,@RequestParam ParentType type){
+        return commentService.getComment(commentId,type);
     }
 
     @PutMapping("/updateComments")
-    public ResponseEntity update_Comment(@RequestBody ComUpdatePojo comUpdatePojo)
+    public ResponseEntity updateComment(@RequestBody ComUpdateRequest comUpdateRequest)
     {
-        return commentService.update_comment(comUpdatePojo);
+        return commentService.updateComment(comUpdateRequest);
     }
 
     @DeleteMapping("/deleteComment")
-    public ResponseEntity delete_comment(@RequestParam int commentId)
+    public ResponseEntity deleteComment(@RequestParam int commentId)
     {
-        return commentService.delete_comment(commentId);
+        return commentService.deleteComment(commentId);
     }
 
     @PutMapping("/updateIsReported")
-    public ResponseEntity update_isreported(@RequestParam int commentId,@RequestParam int reportedBy) { return commentService.update_isReported(commentId,reportedBy); }
+    public ResponseEntity updateIsreported(@RequestParam int commentId,@RequestParam int reportedBy) { return commentService.updateIsReported(commentId,reportedBy); }
 
 }

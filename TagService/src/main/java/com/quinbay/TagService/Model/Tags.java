@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 
@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Tags {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="tagSeq",sequenceName = "tagSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "tagSeq")
     @Column(name="tagid")
     int tagid;
     @Column(name="tagname")
@@ -27,9 +28,9 @@ public class Tags {
     @Column(name="tagdescription")
     String tagdescription;
     @Column(name="createdby")
-    int createdby;
+    Integer createdby;
     @Column(name="updatedby")
-    int updatedby=0;
+    Integer updatedby;
     @Column(name="noofblogs")
     int noofblogs=0;
     @Column(name="noofclosedblogs")
@@ -38,10 +39,10 @@ public class Tags {
     int noofintrestedusers=0;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
     @Column(name="isdeleted")
     Boolean isdeleted=false;
 }

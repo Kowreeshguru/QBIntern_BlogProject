@@ -1,4 +1,6 @@
 package com.quinbay.BlogService.model;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnsUpdatePojo {
-    int ansId;
-    String content;
-    int updatedBy;
+public class BlogTagRequest {
+    String tagname;
+    Integer tagid;
 }

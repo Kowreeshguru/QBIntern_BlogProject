@@ -1,15 +1,17 @@
 package com.quinbay.BlogService.controller;
 
 
-import com.quinbay.BlogService.model.BlogPojo;
+import com.quinbay.BlogService.model.BlogRequest;
 import com.quinbay.BlogService.model.Blogs;
-import com.quinbay.BlogService.model.UpdatePojo;
+import com.quinbay.BlogService.model.UpdateRequest;
 import com.quinbay.BlogService.services.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/blog")
@@ -18,41 +20,51 @@ public class BlogController {
     BlogService blogService;
 
     @PostMapping("/addBlogs")
-    public Blogs add_blogs(@RequestBody BlogPojo blog)
+    public Blogs addBlogs(@RequestBody BlogRequest blog)
     {
-        return blogService.add_tags(blog);
+        return blogService.addTags(blog);
     }
 
     @GetMapping("/getBlogsById")
-    public Blogs get_blog_byId(@RequestParam int blogId){
-        return blogService.get_blogs_byId(blogId);
+    public Blogs getBlogById(@RequestParam int blogId,@RequestParam int userId){
+        return blogService.getBlogsById(blogId,userId);
+    }
+
+    @GetMapping("/getBlogsFromAnswer")
+    public HashSet<Blogs> getBlogByAnsId(@RequestParam int userId){
+        return blogService.getBlogsfromAnswer(userId);
     }
 
     @GetMapping("/getBlogsByTagId")
-    public ArrayList<Blogs> get_blog_bytagId(@RequestParam int tagId){
-        return blogService.get_blogsByTags(tagId);
+    public ArrayList<Blogs> getBlogBytagId(@RequestParam int tagId){
+        return blogService.getBlogsByTags(tagId);
+    }
+
+    @GetMapping("/getBlogsByUserId")
+    public List<Blogs> getBolgByUserId(@RequestParam int userId){
+        return blogService.getBlogsByUserId(userId);
     }
 
     @GetMapping("/searchBlogs")
-    public ArrayList<Blogs> search_blogs(@RequestParam String hint){
+    public ArrayList<Blogs> searchBlogs(@RequestParam String hint){
         return blogService.searchBlogs("%"+hint+"%");
     }
 
     @GetMapping("/getReportedBlogs")
-    public ArrayList<Blogs> get_reportedblogs(){
-        return blogService.get_reportedblogs();
+    public ArrayList<Blogs> getReportedblogs(){
+        return blogService.getReportedblogs();
     }
 
     @GetMapping("/getBlogs")
-    public ArrayList<Blogs> get_blogs(){
-        return blogService.get_blogs();
+    public ArrayList<Blogs> getBlogs(){
+        return blogService.getBlogs();
     }
 
 
     @PutMapping("/updateBlogs")
-    public ResponseEntity update_blogs(@RequestBody UpdatePojo updatePojo)
+    public ResponseEntity updateBlogs(@RequestBody UpdateRequest updateRequest)
     {
-        return blogService.update_blogs(updatePojo);
+        return blogService.updateBlogs(updateRequest);
     }
 
 //    @PutMapping("/updateUpvotes")
@@ -65,14 +77,14 @@ public class BlogController {
 //    public ResponseEntity add_view(@RequestParam int blogId) { return blogService.add_views(blogId); }
 
     @PutMapping("/updateIsReported")
-    public ResponseEntity update_isreported(@RequestParam int blogId,@RequestParam int reportedBy) { return blogService.update_isReported(blogId,reportedBy); }
+    public ResponseEntity updateIsreported(@RequestParam int blogId,@RequestParam int reportedBy) { return blogService.updateIsReported(blogId,reportedBy); }
 
-    @PutMapping("/updateIsClosed")
-    public ResponseEntity update_isclosed(@RequestParam int blogId) { return blogService.update_isClosed(blogId); }
+    @PutMapping("/updateAcceptedAnswer")
+    public ResponseEntity updateAcceptedAnswer(@RequestParam int blogId,@RequestParam int ansId) { return blogService.updateAcceptedAnswer(blogId,ansId); }
 
     @DeleteMapping("/deleteBlog")
-    public ResponseEntity delete_blogs(@RequestParam int blogid)
+    public ResponseEntity deleteBlogs(@RequestParam int blogid)
     {
-        return blogService.delete_blog(blogid);
+        return blogService.deleteBlog(blogid);
     }
 }

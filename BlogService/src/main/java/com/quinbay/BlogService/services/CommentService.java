@@ -16,12 +16,13 @@ public class CommentService implements CommentInteface {
     CommentRepository commentRepository;
 
     @Override
-    public Comment add_comment(CommentPojo commentPojo) {
+    public Comment addComment(CommentRequest commentRequest) {
         try {
             Comment comment=new Comment();
-            comment.setContent(commentPojo.getContent());
-            comment.setCommentedfor(commentPojo.getCommentFor());
-            comment.setCommentedby(commentPojo.getCommentedby());
+            comment.setContent(commentRequest.getContent());
+            comment.setCommentedfor(commentRequest.getCommentFor());
+            comment.setType(commentRequest.getType());
+            comment.setCommentedby(commentRequest.getCommentedby());
             return commentRepository.save(comment);
         }catch(Exception e){
             System.out.println(e);
@@ -30,14 +31,21 @@ public class CommentService implements CommentInteface {
     }
 
     @Override
-    public ArrayList<Comment> getComment(int commentId){return commentRepository.findByCommentedforAndIsdeleted(commentId,false);}
+    public ArrayList<Comment> getComment(int commentId,ParentType type){
+        try {
+            return commentRepository.findByCommentedforAndTypeAndIsdeleted(commentId, type, false);
+        }catch(Exception e){
+            System.out.println(e);
+            return null;
+        }
+    }
 
     @Override
-    public ResponseEntity<String> update_comment(ComUpdatePojo comUpdatePojo){
+    public ResponseEntity<String> updateComment(ComUpdateRequest commentUpdateRequest){
         try {
-            Comment comment = commentRepository.findById(comUpdatePojo.getAnsId());
-            comment.setContent(comUpdatePojo.getContent());
-            comment.setUpdatedby(comUpdatePojo.getUpdatedBy());
+            Comment comment = commentRepository.findById(commentUpdateRequest.getAnsId());
+            comment.setContent(commentUpdateRequest.getContent());
+            comment.setUpdatedby(commentUpdateRequest.getUpdatedBy());
             commentRepository.save(comment);
             return new ResponseEntity("Successfully update",HttpStatus.OK);
         }catch (Exception e){
@@ -45,8 +53,9 @@ public class CommentService implements CommentInteface {
         }
     }
 
-    public ResponseEntity<String> update_upvotes(int commentId,Boolean check){
+    public ResponseEntity<String> updateUpvotes(int commentId,Boolean check){
         try {
+            System.out.println("inside comment updateupvotes"+commentId);
             Comment comment = commentRepository.findById(commentId);
             if(check){comment.setUpvotes(comment.getUpvotes()+1);}
             else{comment.setUpvotes(comment.getUpvotes()-1);}
@@ -57,7 +66,7 @@ public class CommentService implements CommentInteface {
         }
     }
 
-    public ResponseEntity<String> update_downvotes(int commentId,Boolean check){
+    public ResponseEntity<String> updateDownvotes(int commentId,Boolean check){
         try {
             Comment comment = commentRepository.findById(commentId);
             if(check){comment.setDownvotes(comment.getDownvotes()+1);}
@@ -70,7 +79,7 @@ public class CommentService implements CommentInteface {
     }
 
     @Override
-    public ResponseEntity<String> update_isReported(int commentId,int reportedBy){
+    public ResponseEntity<String> updateIsReported(int commentId,int reportedBy){
         try {
             Comment comment = commentRepository.findById(commentId);
             comment.setIsreported(true);
@@ -83,7 +92,7 @@ public class CommentService implements CommentInteface {
     }
 
     @Override
-    public ResponseEntity delete_comment(int commentId){
+    public ResponseEntity deleteComment(int commentId){
         try {
             Comment comment = commentRepository.findById(commentId);
             comment.setIsdeleted(true);

@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ComUpdatePojo {
-    int ansId;
+public class CommentRequest {
     String content;
-    int updatedBy;
+    Integer commentFor;
+    Integer commentedby;
+    ParentType type;
 }

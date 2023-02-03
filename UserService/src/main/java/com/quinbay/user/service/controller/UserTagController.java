@@ -18,23 +18,23 @@ public class UserTagController {
     UsersTagService usersTagService;
 
     @GetMapping("/getUserTag")
-    public ArrayList<UserTag> get_userTags(@RequestParam int UserId){
+    public ArrayList<UserTag> getUserTags(@RequestParam int UserId){
         return usersTagService.getUserTags(UserId);
     }
 
-    @PostMapping("/addUserTag")
-    public UserTag add_UserTag(@RequestBody UserTag a)
-    {
+//    @PostMapping("/addUserTag")
+//    public UserTag addUserTag(@RequestBody UserTag a)
+//    {
+//
+//        return usersTagService.addUserTag(a);
+//    }
 
-        return usersTagService.add_userTag(a);
-    }
-
-    @GetMapping("/mailService")
-    public void mail_service(@RequestBody TagTransfer tagTransfer)
-    {
-        System.out.println(tagTransfer.getTagList());
+//    @GetMapping("/mailService")
+//    public void mailService(@RequestBody TagTransfer tagTransfer)
+//    {
+//        System.out.println(tagTransfer.getTagList());
 //        usersTagService.mail_service(tagList);
-    }
+//    }
 
     @DeleteMapping("/deleteUserTag")
     public ResponseEntity deleteUserTags(@RequestParam int userid, @RequestParam int tagid){

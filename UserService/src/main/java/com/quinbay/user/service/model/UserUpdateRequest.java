@@ -1,4 +1,4 @@
-package com.quinbay.BlogService.model;
+package com.quinbay.user.service.model;
 
 
 import lombok.AllArgsConstructor;
@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentPojo {
-    String content;
-    Integer commentFor;
-    Integer commentedby;
+public class UserUpdateRequest {
+    Integer userId;
+    String userName;
+    String email;
+    String jobDescription;
 }

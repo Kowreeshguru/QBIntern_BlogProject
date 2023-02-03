@@ -9,6 +9,6 @@ import java.util.ArrayList;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tags, Integer> {
-    Tags findById(int tagId);
-    ArrayList<Tags> findByIsdeleted(Boolean check);
+//    Tags findById(int tagId);
+    ArrayList<Tags> findByIsdeleted(Boolean deleteCheck);
 }

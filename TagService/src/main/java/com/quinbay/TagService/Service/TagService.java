@@ -2,9 +2,9 @@ package com.quinbay.TagService.Service;
 
 
 import com.quinbay.TagService.Interface.TagInterface;
-import com.quinbay.TagService.Model.TagPojo;
+import com.quinbay.TagService.Model.TagRequest;
 import com.quinbay.TagService.Model.Tags;
-import com.quinbay.TagService.Model.UpdatePojo;
+import com.quinbay.TagService.Model.UpdateRequest;
 import com.quinbay.TagService.Repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagService implements TagInterface {
@@ -21,12 +21,12 @@ public class TagService implements TagInterface {
     TagRepository tagRepository;
 
     @Override
-    public Tags add_tags(TagPojo tagPojo) {
+    public Tags addTags(TagRequest tagRequest) {
         try {
             Tags tags=new Tags();
-            tags.setTagname(tagPojo.getTagName());
-            tags.setTagdescription(tagPojo.getTagDescription());
-            tags.setCreatedby(tagPojo.getCreatedby());
+            tags.setTagname(tagRequest.getTagName());
+            tags.setTagdescription(tagRequest.getTagDescription());
+            tags.setCreatedby(tagRequest.getCreatedby());
             return tagRepository.save(tags);
         }catch(Exception e){
             System.out.println(e);
@@ -35,17 +35,18 @@ public class TagService implements TagInterface {
     }
 
     @Override
-    public Tags get_tags_byId(int tagId){
+    public Tags getTagsById(int tagId){
         try {
-            return tagRepository.findById(tagId);
+            return tagRepository.findById(tagId).get();
         } catch (Exception e) {
             System.out.println(e);
             return null;
         }
     }
 
+//    @Cacheable(value = "listOfCategories")
     @Override
-    public ArrayList<Tags> get_tags(){
+    public ArrayList<Tags> getTags(){
         try {
             return tagRepository.findByIsdeleted(false);
         } catch (Exception e) {
@@ -55,13 +56,13 @@ public class TagService implements TagInterface {
     }
 
     @Override
-    public ResponseEntity<String> update_tags(UpdatePojo updatePojo){
+    public ResponseEntity<String> updateTags(UpdateRequest updateRequest){
         try {
-            Tags tags = tagRepository.findById(updatePojo.getTagId());
-            tags.setTagname(updatePojo.getTagName());
-            tags.setTagdescription(updatePojo.getTagDescription());
-            tags.setUpdatedby(updatePojo.getUpdatedby());
-            tagRepository.save(tags);
+            Optional<Tags> tags = tagRepository.findById(updateRequest.getTagId());
+            tags.get().setTagname(updateRequest.getTagName());
+            tags.get().setTagdescription(updateRequest.getTagDescription());
+            tags.get().setUpdatedby(updateRequest.getUpdatedby());
+            tagRepository.save(tags.get());
             return new ResponseEntity("Successfully update",HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
@@ -69,23 +70,23 @@ public class TagService implements TagInterface {
     }
 
     @Override
-    public ResponseEntity update_NoOfBlog(int tagId){
+    public ResponseEntity updateNoOfBlog(int tagId){
         try {
-            Tags tags = tagRepository.findById(tagId);
-            tags.setNoofblogs(tags.getNoofblogs()+1);
-            tagRepository.save(tags);
-            return new ResponseEntity("NoOfBlog added",HttpStatus.OK);
+            Optional<Tags> tags = tagRepository.findById(tagId);
+            tags.get().setNoofblogs(tags.get().getNoofblogs()+1);
+            tagRepository.save(tags.get());
+            return new ResponseEntity(HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
-    public ResponseEntity update_NoOfClosedBlog(int tagId){
+    public ResponseEntity updateNoOfClosedBlog(int tagId){
         try {
-            Tags tags = tagRepository.findById(tagId);
-            tags.setNoofclosedblogs(tags.getNoofclosedblogs()+1);
-            tagRepository.save(tags);
+            Optional<Tags> tags = tagRepository.findById(tagId);
+            tags.get().setNoofclosedblogs(tags.get().getNoofclosedblogs()+1);
+            tagRepository.save(tags.get());
             return new ResponseEntity("NoOfClosedBlog added",HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
@@ -93,23 +94,24 @@ public class TagService implements TagInterface {
     }
 
     @Override
-    public ResponseEntity update_NoOfIntrested(int tagId){
+    public ResponseEntity updateNoOfIntrested(int tagId){
         try {
-            Tags tags = tagRepository.findById(tagId);
-            tags.setNoofintrestedusers(tags.getNoofintrestedusers()+1);
-            tagRepository.save(tags);
-            return new ResponseEntity("NoOfIntrested added",HttpStatus.OK);
+            System.out.println(tagId);
+            Optional<Tags> tags = tagRepository.findById(tagId);
+            tags.get().setNoofintrestedusers(tags.get().getNoofintrestedusers()+1);
+            tagRepository.save(tags.get());
+            return new ResponseEntity(HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
-    public ResponseEntity delete_tag(int tagId){
+    public ResponseEntity deleteTag(int tagId){
         try {
-            Tags tags = tagRepository.findById(tagId);
-            tags.setIsdeleted(true);
-            tagRepository.save(tags);
+            Optional<Tags> tags = tagRepository.findById(tagId);
+            tags.get().setIsdeleted(true);
+            tagRepository.save(tags.get());
             return new ResponseEntity("Successfully deleted",HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);

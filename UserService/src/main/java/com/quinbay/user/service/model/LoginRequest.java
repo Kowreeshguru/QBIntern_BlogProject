@@ -1,4 +1,4 @@
-package com.quinbay.TagService.Model;
+package com.quinbay.user.service.model;
 
 
 import lombok.AllArgsConstructor;
@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdatePojo {
-    int tagId;
-    String tagName;
-    String tagDescription;
-    int updatedby;
+public class LoginRequest {
+    String email;
+    String password;
 }

@@ -2,8 +2,8 @@ package com.quinbay.BlogService.services;
 
 
 import com.quinbay.BlogService.api.AnswerInterface;
-import com.quinbay.BlogService.model.AnsUpdatePojo;
-import com.quinbay.BlogService.model.AnswerPojo;
+import com.quinbay.BlogService.model.AnsUpdateRequest;
+import com.quinbay.BlogService.model.AnswerRequest;
 import com.quinbay.BlogService.model.Answers;
 import com.quinbay.BlogService.repository.AnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +23,12 @@ public class AnswerService implements AnswerInterface {
     RestTemplate restTemplate;
 
     @Override
-    public Answers add_answer(AnswerPojo answerPojo) {
+    public Answers addAnswer(AnswerRequest answerRequest) {
         try {
             Answers answers=new Answers();
-            answers.setAnscontent(answerPojo.getContent());
-            answers.setAnsweredfor(answerPojo.getAnsweredFor());
-            answers.setAnsweredby(answerPojo.getAnsweredBy());
+            answers.setAnscontent(answerRequest.getContent());
+            answers.setAnsweredfor(answerRequest.getAnsweredFor());
+            answers.setAnsweredby(answerRequest.getAnsweredBy());
             return answerRepository.save(answers);
         }catch(Exception e){
             System.out.println(e);
@@ -37,14 +37,29 @@ public class AnswerService implements AnswerInterface {
     }
 
     @Override
-    public ArrayList<Answers> getAnswerForBlog(int blogId){return answerRepository.findByAnsweredforAndIsdeleted(blogId,false);}
+    public ArrayList<Answers> getAnswerForBlog(int blogId){
+        try {
+            return answerRepository.findByAnsweredforAndIsdeleted(blogId, false);
+        }catch (Exception e){
+            return null;
+        }
+    }
 
     @Override
-    public ResponseEntity<String> update_answer(AnsUpdatePojo ansUpdatePojo){
+    public ArrayList<Answers> getQuesId(int userId){
         try {
-            Answers answer = answerRepository.findById(ansUpdatePojo.getAnsId());
-            answer.setAnscontent(ansUpdatePojo.getContent());
-            answer.setUpdateby(ansUpdatePojo.getUpdatedBy());
+            return answerRepository.findByAnsweredbyAndIsdeleted(userId, false);
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> updateAnswer(AnsUpdateRequest ansUpdateRequest){
+        try {
+            Answers answer = answerRepository.findById(ansUpdateRequest.getAnsId());
+            answer.setAnscontent(ansUpdateRequest.getContent());
+            answer.setUpdateby(ansUpdateRequest.getUpdatedBy());
             answerRepository.save(answer);
             return new ResponseEntity("Successfully update",HttpStatus.OK);
         }catch (Exception e){
@@ -52,15 +67,17 @@ public class AnswerService implements AnswerInterface {
         }
     }
 
-    public ResponseEntity<String> update_upvotes(int ansId,Boolean check){
+    @Override
+    public ResponseEntity<String> updateUpvotes(int ansId,Boolean checkVoteType){
         try {
+            System.out.println("inside ans updateupvotes"+ansId);
             Answers answers = answerRepository.findById(ansId);
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<>(headers);
             restTemplate.exchange(
-                    "http://localhost:8080/user/updateCreditpoints?UserId="+answers.getAnsweredby()+"&check="+check+"", HttpMethod.PUT, entity, ResponseEntity.class).getBody();
-            if(check){answers.setUpvotes(answers.getUpvotes()+1);}
+                    "http://localhost:8080/user/updateCreditpoints?UserId="+answers.getAnsweredby()+"&check="+checkVoteType+"", HttpMethod.PUT, entity, ResponseEntity.class).getBody();
+            if(checkVoteType){answers.setUpvotes(answers.getUpvotes()+1);}
             else{answers.setUpvotes(answers.getUpvotes()-1);}
             answerRepository.save(answers);
             return new ResponseEntity("Successfully update",HttpStatus.OK);
@@ -68,16 +85,17 @@ public class AnswerService implements AnswerInterface {
             return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
         }
     }
-
-    public ResponseEntity<String> update_downvotes(int ansId,Boolean check){
+    @Override
+    public ResponseEntity<String> updateDownvotes(int ansId,Boolean checkVoteType){
         try {
+            System.out.println("inside answer downcount");
             Answers answers = answerRepository.findById(ansId);
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<>(headers);
             restTemplate.exchange(
-                    "http://localhost:8080/user/updateCreditpoints?UserId="+answers.getAnsweredby()+"&check="+!check+"", HttpMethod.PUT, entity, ResponseEntity.class).getBody();
-            if(check){answers.setDownvotes(answers.getDownvotes()+1);}
+                    "http://localhost:8080/user/updateCreditpoints?UserId="+answers.getAnsweredby()+"&check="+!checkVoteType+"", HttpMethod.PUT, entity, ResponseEntity.class).getBody();
+            if(checkVoteType){answers.setDownvotes(answers.getDownvotes()+1);}
             else{answers.setDownvotes(answers.getDownvotes()-1);}
             answerRepository.save(answers);
             return new ResponseEntity("Successfully update",HttpStatus.OK);
@@ -86,18 +104,20 @@ public class AnswerService implements AnswerInterface {
         }
     }
 
-    public ResponseEntity<String> update_isClosed(int ansId){
-        try {
-            Answers answers = answerRepository.findById(ansId);
-            answers.setIsclosed(true);
-            answerRepository.save(answers);
-            return new ResponseEntity("Successfully update",HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @Override
+//    public ResponseEntity<String> updateIsClosed(int ansId){
+//        try {
+//            Answers answers = answerRepository.findById(ansId);
+//            answers.setIsclosed(true);
+//            answerRepository.save(answers);
+//            return new ResponseEntity("Successfully update",HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity("Not updated, ID not found",HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
-    public ResponseEntity<String> update_isReported(int ansId,int reportedBy){
+    @Override
+    public ResponseEntity<String> updateIsReported(int ansId,int reportedBy){
         try {
             Answers answers = answerRepository.findById(ansId);
             answers.setIsreported(true);
@@ -110,7 +130,7 @@ public class AnswerService implements AnswerInterface {
     }
 
     @Override
-    public ResponseEntity delete_answer(int ansId){
+    public ResponseEntity deleteAnswer(int ansId){
         try {
             Answers answers = answerRepository.findById(ansId);
             answers.setIsdeleted(true);

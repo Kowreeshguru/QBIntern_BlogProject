@@ -9,8 +9,14 @@ import java.util.ArrayList;
 
 @Repository
 public interface AnswerInterface {
-    Answers add_answer(AnswerPojo answer);
+    Answers addAnswer(AnswerRequest answer);
     ArrayList<Answers> getAnswerForBlog(int blogId);
-    ResponseEntity<String> update_answer(AnsUpdatePojo ansUpdatePojo);
-    ResponseEntity delete_answer(int ansId);
+//    ResponseEntity<String> updateAcceptedAnswer(int blogId,int ansId);
+    ResponseEntity<String> updateAnswer(AnsUpdateRequest ansUpdateRequest);
+    ArrayList<Answers> getQuesId(int userId);
+    ResponseEntity<String> updateIsReported(int ansId,int reportedBy);
+    ResponseEntity<String> updateDownvotes(int ansId,Boolean checkVoteType);
+    ResponseEntity<String> updateUpvotes(int ansId,Boolean checkVoteType);
+//    ResponseEntity<String> updateIsClosed(int ansId);
+    ResponseEntity deleteAnswer(int ansId);
 }

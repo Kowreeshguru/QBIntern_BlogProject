@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -17,7 +18,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="comSeq",sequenceName = "comSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comSeq")
     @Column(name="commentid")
     int commentid;
     @Column(name="content")
@@ -32,16 +34,19 @@ public class Comment {
     int upvotes=0;
     @Column(name="downvotes")
     int downvotes=0;
+    @Column(name="type")
+    ParentType type;
     @Column(name="isreported")
     Boolean isreported=false;
     @Column(name="reportedby")
-    Integer reportedby=0;
+    Integer reportedby;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
     @Column(name="isdeleted")
     Boolean isdeleted=false;
+
 }

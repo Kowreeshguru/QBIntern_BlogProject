@@ -1,16 +1,15 @@
 package com.quinbay.TagService.Controller;
 
 
-import com.quinbay.TagService.Model.TagPojo;
+import com.quinbay.TagService.Model.TagRequest;
 import com.quinbay.TagService.Model.Tags;
-import com.quinbay.TagService.Model.UpdatePojo;
+import com.quinbay.TagService.Model.UpdateRequest;
 import com.quinbay.TagService.Service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/tag")
@@ -20,48 +19,49 @@ public class TagController {
     TagService tagService;
 
     @PostMapping("/addTags")
-    public Tags add_tags(@RequestBody TagPojo tagPojo)
+    public Tags addTags(@RequestBody TagRequest tagRequest)
     {
-        return tagService.add_tags(tagPojo);
+        return tagService.addTags(tagRequest);
     }
 
+//    @Cacheable(value = "listOfTags")
     @GetMapping("/getTagsById")
-    public Tags get_tag_byId(@RequestParam int tagId){
-        return tagService.get_tags_byId(tagId);
+    public Tags getTagById(@RequestParam int tagId){
+        return tagService.getTagsById(tagId);
     }
 
     @GetMapping("/getTag")
-    public ArrayList<Tags> get_tag(){
-        return tagService.get_tags();
+    public ArrayList<Tags> getTag(){
+        return tagService.getTags();
     }
 
     @PutMapping("/updateTags")
-    public ResponseEntity update_user(@RequestBody UpdatePojo updatePojo)
+    public ResponseEntity updateUser(@RequestBody UpdateRequest updateRequest)
     {
-        return tagService.update_tags(updatePojo);
+        return tagService.updateTags(updateRequest);
     }
 
     @PutMapping("/updateNoOfBlogs")
-    public ResponseEntity update_NoOfBlogs(@RequestParam int Tagid)
+    public ResponseEntity updateNoOfBlogs(@RequestParam int tagid)
     {
-        return tagService.update_NoOfBlog(Tagid);
+        return tagService.updateNoOfBlog(tagid);
     }
 
     @PutMapping("/updateNoOfClosedBlogs")
-    public ResponseEntity update_NoOfClosedBlogs(@RequestParam int Tagid)
+    public ResponseEntity updateNoOfClosedBlogs(@RequestParam int tagid)
     {
-        return tagService.update_NoOfClosedBlog(Tagid);
+        return tagService.updateNoOfClosedBlog(tagid);
     }
 
     @PutMapping("/updateNoOfIntrested")
-    public ResponseEntity update_NoOfIntrested(@RequestParam int Tagid)
+    public ResponseEntity updateNoOfIntrested(@RequestParam int tagid)
     {
-        return tagService.update_NoOfIntrested(Tagid);
+        return tagService.updateNoOfIntrested(tagid);
     }
 
     @DeleteMapping("/deleteTag")
-    public ResponseEntity delete_tags(@RequestParam int Tagid)
+    public ResponseEntity deletetags(@RequestParam int tagid)
     {
-        return tagService.delete_tag(Tagid);
+        return tagService.deleteTag(tagid);
     }
 }

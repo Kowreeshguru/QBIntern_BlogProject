@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answers, Integer> {
-    ArrayList<Answers> findByAnsweredforAndIsdeleted(int BlogId,Boolean check);
-    Answers findByAnsidAndIsdeleted(int ansId,Boolean check);
+    ArrayList<Answers> findByAnsweredforAndIsdeleted(int BlogId,Boolean deleteCheck);
+    ArrayList<Answers> findByAnsweredbyAndIsdeleted(int userId,Boolean deleteCheck);
     Answers findById(int ansId);
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdatePojo {
+public class UpdateRequest {
     int blogId;
     String title;
     String description;

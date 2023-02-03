@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -17,21 +18,29 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Votes {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="voteSeq",sequenceName = "voteSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "voteSeq")
     @Column(name="id")
     int id;
     @Column(name="votedfor")
     Integer votedfor;
     @Column(name="votetype")
     Boolean votetype;
-//    @Column(name="parenttype")
-//    ParentType parenttype;
+    @Column(name="parenttype")
+    ParentType parenttype;
     @Column(name="votedby")
-    int votedby;
+    Integer votedby;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
+
+    public Votes(int votedby,Boolean votetype,ParentType parenttype,int votedfor){
+        this.votedby=votedby;
+        this.votetype=votetype;
+        this.parenttype=parenttype;
+        this.votedfor=votedfor;
+    }
 }

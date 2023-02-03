@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BlogView {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="viewSeq",sequenceName = "viewSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "viewSeq")
     @Column(name="id")
     int id;
     @Column(name="blogid")
@@ -25,8 +26,13 @@ public class BlogView {
     Integer userid;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
+
+    public BlogView(int blogid,int userid){
+        this.blogid=blogid;
+        this.userid=userid;
+    }
 }

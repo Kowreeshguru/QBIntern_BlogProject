@@ -2,7 +2,6 @@ package com.quinbay.BlogService.controller;
 
 
 import com.quinbay.BlogService.kafka.KafkaPublishingService;
-import com.quinbay.BlogService.model.BlogTagPojo;
 import com.quinbay.BlogService.model.BlogTags;
 import com.quinbay.BlogService.model.TagTransfer;
 import com.quinbay.BlogService.services.BlogService;
@@ -29,33 +28,33 @@ public class BlogTagController {
     KafkaPublishingService kafkaPublishingService;
 
     @GetMapping("/getBlogTag")
-    public ArrayList<BlogTags> get_blogTags(@RequestParam int blogId){
+    public ArrayList<BlogTags> getBlogTags(@RequestParam int blogId){
         return blogTagService.getBlogTags(blogId);
     }
 
-    @PostMapping("/addBlogTag")
-    public BlogTags add_BlogTag(@RequestBody BlogTagPojo blogTagPojo)
-    {
-        for(Integer tagId:blogTagPojo.getTagList()) {
-            blogTagService.add_blogTag(blogTagPojo.getBlogId(),tagId);
-        }
-        TagTransfer tagTransfer=new TagTransfer();
-        tagTransfer.setTagList(blogTagPojo.getTagList());
+//    @PostMapping("/addBlogTag")
+//    public BlogTags addBlogTag(@RequestBody BlogTagPojo blogTagPojo)
+//    {
+//        for(Integer tagId:blogTagPojo.getTagList()) {
+//            blogTagService.addBlogTag(blogTagPojo.getBlogId(),tagId);
+//        }
 //        TagTransfer tagTransfer=new TagTransfer();
 //        tagTransfer.setTagList(blogTagPojo.getTagList());
-        kafkaPublishingService.BlogTagInfo(tagTransfer);
-////        System.out.println(blogTagPojo.getTagList().getClass());
-
-//        tagTransfer.setTagList(blogTagPojo.getTagList());
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//        HttpEntity<TagTransfer> entity = new HttpEntity<>(tagTransfer,headers);
-//        restTemplate.exchange(
-//                "http://localhost:8080/userTag/mailService", HttpMethod.GET, entity, ArrayList.class).getBody();
-        return null;
-    }
+////        TagTransfer tagTransfer=new TagTransfer();
+////        tagTransfer.setTagList(blogTagPojo.getTagList());
+//        kafkaPublishingService.BlogTagInfo(tagTransfer);
+//////        System.out.println(blogTagPojo.getTagList().getClass());
+//
+////        tagTransfer.setTagList(blogTagPojo.getTagList());
+////        HttpHeaders headers = new HttpHeaders();
+////        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+////        HttpEntity<TagTransfer> entity = new HttpEntity<>(tagTransfer,headers);
+////        restTemplate.exchange(
+////                "http://localhost:8080/userTag/mailService", HttpMethod.GET, entity, ArrayList.class).getBody();
+//        return null;
+//    }
     @DeleteMapping("/deleteBlogTag")
-    public ResponseEntity delete_BlogTags(@RequestParam int blogId, @RequestParam int tagid){
+    public ResponseEntity deleteBlogTags(@RequestParam int blogId, @RequestParam int tagid){
         return blogTagService.deleteBlogTags(blogId,tagid);
     }
 }

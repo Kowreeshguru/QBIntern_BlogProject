@@ -11,7 +11,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 
@@ -21,7 +22,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="userSeq",sequenceName = "userSeq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "userSeq")
     @Column(name="userid")
     int userid;
     @Column(name="username")
@@ -29,7 +31,7 @@ public class Users {
     @JsonIgnore
     @Column(name="password")
     String password;
-    @Column(name="email")
+    @Column(name="email",unique = true)
     String email;
     @Column(name="jobposition")
     String jobposition;
@@ -43,9 +45,13 @@ public class Users {
     Boolean isdelete=false;
     @Column(name="createdatetime")
     @CreationTimestamp
-    LocalDateTime createdatetime;
+    Date createdatetime;
     @Column(name="updatedatetime")
     @UpdateTimestamp
-    LocalDateTime updatedatetime;
+    Date updatedatetime;
+    @OneToMany(targetEntity = UserTag.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "userid",referencedColumnName = "userid")
+//    @JsonManagedReference
+      List<UserTag> usertags;
 
 }

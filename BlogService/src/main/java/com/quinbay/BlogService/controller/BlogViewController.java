@@ -17,9 +17,9 @@ public class BlogViewController {
     @Autowired
     BlogViewService blogViewService;
 
-    @PostMapping("/addBlogTag")
-    public BlogView add_BlogView(@RequestBody BlogView blogView)
-    {
-        return blogViewService.add_blogView(blogView);
-    }
+//    @PostMapping("/addBlogTag")
+//    public BlogView addBlogView(@RequestBody BlogView blogView)
+//    {
+//        return blogViewService.addBlogView(blogView);
+//    }
 }
